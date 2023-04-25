@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { videogame, Genres } = require("../db");
+const { Op } = require("sequelize"); 
 
 const getAllVideogames = async () => {
     try {
@@ -83,8 +84,36 @@ const searchVideogamesByName = async (name) => {
     }
 };
 
+const createVideogame = async (name, description, release_date, rating, platforms, genres) => {
+    try {
+        const videogame = await Videogame.create({
+            name,
+            description,
+            release_date,
+            rating,
+            platforms,
+        });
+
+        await videogame.addGenres(genres);
+
+        const response = {
+            id: videogame.id,
+            name: videogame.name,
+            description: videogame.description,
+            release_date: videogame.release_date,
+            rating: videogame.rating,
+            platforms: videogame.platforms,
+            genres: genres,
+        }
+        return response;
+    } catch (err) {
+        throw new Error(err.message);
+    }
+};
+
 module.exports = {
     getAllVideogames,
     getVideogameById,
-    searchVideogamesByName
+    searchVideogamesByName,
+    createVideogame
 };

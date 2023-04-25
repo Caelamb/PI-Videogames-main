@@ -1,5 +1,5 @@
 const { getAllVideogames, getVideogameById } = require("../controllers/videogameControllers");
-const { searchVideogamesByName } = require("../controllers/videogameControllers");
+const { searchVideogamesByName, createVideogame } = require("../controllers/videogameControllers");
 
 const getVideogames = async (req,res) => {
     try {
@@ -32,8 +32,20 @@ const getVideogamesByName = async (req, res) => {
     }
   };
 
+const postVideogame = async (req, res) => {
+    const {name, description, release_date, rating, platforms, genres} = req.body;
+
+    try {
+        const Videogame = await createVideogame(name, description, release_date, rating, platforms, genres);
+        res.status(201).json(Videogame);
+    } catch (err) {
+        res.status(500).json({ message: "Error creating Videogame"});
+    }
+};
+
 module.exports = {
     getVideogames,
     getVideogameId,
-    getVideogamesByName
+    getVideogamesByName,
+    postVideogame
 };
