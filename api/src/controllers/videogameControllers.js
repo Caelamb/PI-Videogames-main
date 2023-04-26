@@ -1,10 +1,10 @@
 const axios = require("axios");
-const { videogame, Genres } = require("../db");
+const { Videogame, Genres } = require("../db");
 const { Op } = require("sequelize"); 
 
 const getAllVideogames = async () => {
     try {
-        const videogames = await videogame.findAll();
+        const videogames = await Videogame.findAll();
         return videogames;
     } catch (err) {
         console.error(err);
@@ -14,11 +14,32 @@ const getAllVideogames = async () => {
 
 const getVideogameById = async (idVideogame) => {
     try {
-        const videogameDetail = await videogame.findOne({
-            where: { id: idVideogame },
-            include: Genres,
-        });
-        return videogameDetail;
+     // Buscar el videojuego en la base de datos
+    const videogame = await Videogame.findOne({
+        where: { id: idVideogame },
+        include: Genres,
+      });
+  
+      if (videogame) {
+        // Si el videojuego existe en la base de datos, devolverlo
+        return videogame;
+      } else {
+        // Si no existe en la base de datos, hacer una llamada a la API
+        const response = await axios.get(`https://api.rawg.io/api/games/${idVideogame}?key=${process.env.API_KEY}`)
+
+        // Crear un objeto con la información del videojuego
+        const videogameDetail = {
+            id: response.data.id,
+            name: response.data.name,
+            description: response.data.description_raw,
+            releaseDate: response.data.released,
+            rating: response.data.rating,
+            platforms: response.data.platforms.map((platform) => platform.platform.name),
+            genres: response.data.genres.map((genre) => genre.name),
+          };
+      
+          return videogameDetail;
+        }
     } catch (err) {
         console.error(err);
         throw new Error("Error in the server");
@@ -27,9 +48,12 @@ const getVideogameById = async (idVideogame) => {
 
 const searchVideogamesByName = async (name) => {
     try {
+        // Convertir la cadena recibida en minúsculas
+        const nameLower = name.toLowerCase();
+
         //Buscar en la API
         const apiResponse = await axios.get(
-            `https://api.rawg.io/api/games?key=bb714d351fa0484196f8bc137766fa4d&search=${name}&page_size=15`);
+            `https://api.rawg.io/api/games?key=${process.env.API_KEY}&search=${nameLower}&page_size=15`);
 
         const apiVideogames = apiResponse.data.results.map((vg) => ({
             id: vg.id,
@@ -44,14 +68,14 @@ const searchVideogamesByName = async (name) => {
         }));
 
         //Buscar en la base de datos
-        const dbVideogames = await videogame.findAll({
+        const dbVideogames = await Videogame.findAll({
             where: {
               name: {
-                [Op.iLike]: `%${name}%`,
+                [Op.iLike]: `%${nameLower}%`,
               },
             },
             include: {
-              model: genre,
+              model: Genres,
               attributes: ["name"],
               through: { attributes: [] },
             },
