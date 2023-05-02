@@ -1,13 +1,13 @@
 import React from 'react'
 import Card from '../card/Card'
+import styles from "../cards/cards.module.css";
 
-const Cards = () => {
+const Cards = ({ allUsers }) => {
   return (
-    <div>
-      <Card/>
-      <Card/>
-      <Card/>
-      <Card/>
+    <div className={styles['card-container']}>
+      { allUsers?.map(user => (
+       <Card classname={styles.card} key={user.id} user={user}/> 
+      ))}
     </div>
   )
 }

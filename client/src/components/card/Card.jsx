@@ -1,11 +1,12 @@
 import React from 'react'
+import styles from "../card/card.module.css";
 
-const Card = () => {
+const Card = ({ user }) => {
   return (
-    <div>
-      <h3>Name: </h3>
-      <p>imagen: </p>
-      <p>genres: </p>
+    <div className = {styles.container}>
+      <h3 className = {styles.name}>{user.name}</h3>
+      <p className = {styles.image}>{user.image}</p>
+      <p className = {styles.genres}>{user.genres}</p>
     </div>
   )
 }

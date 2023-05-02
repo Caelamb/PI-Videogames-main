@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from "../../components/navbar/Navbar";
 import Cards from "../../components/cards/Cards";
+import { getUsers } from '../../redux/actions'; 
+import { useDispatch, useSelector } from "react-redux";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const allUsers = useSelector((state) => state.allUsers);
+
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [dispatch])
+
   return (
     <div>
-      <p>soy el home</p>
       <Navbar />
-      <Cards />
+      <Cards allUsers={allUsers}/>
    </div>
   )
 }

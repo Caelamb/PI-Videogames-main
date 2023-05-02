@@ -7,9 +7,9 @@ function App() {
   return (
     <div className="App">
       <h1>Henry Videogames</h1>
-      <Home />
-      <Form />
-      <Detail />
+      <Home exact path="/" component={Home}/>
+      <Form exact path="/detail/:id" component={Detail} />
+      <Detail exact path="/form" component={Form} />
     </div>
   );
 }

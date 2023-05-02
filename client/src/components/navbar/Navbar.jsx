@@ -1,9 +1,13 @@
 import React from 'react'
+import styles from "../navbar/navbar.module.css";
 
 const Navbar = () => {
   return (
-    <div>
-      <p>NAVBAR</p>
+    <div className={styles.navbar}>
+      <form>
+        <input placeholder='Busqueda...'/>
+        <button>Buscar</button>
+      </form>
     </div>
   )
 }
