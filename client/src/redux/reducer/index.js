@@ -1,76 +1,55 @@
-import {GET_USERS} from "../actions";
+import { 
+  SEARCH_GAMES, 
+  FETCH_GAMES, 
+  FILTER_GAMES_BY_GENRE, 
+  FILTER_GAMES_BY_ORIGIN, 
+  SORT_GAMES, 
+  SET_CURRENT_PAGE } from '../actions';
 
-let initialState = {
-    allUsers: [],
-    games: [], // lista de videojuegos
-    currentPage: 1, // página actual del paginado
-    loading: false, // indicador de carga
-    error: null, // mensaje de error en caso de que ocurra
+const initialState = {
+  gamesList: [],
+  filteredGames: [],
+  currentGame: {},
+  currentPage: 1,
+  totalPages: 0,
 };
 
-const rootReducer = (state=initialState, action) => {
-    switch(action.type){
-        case GET_USERS:
-            return {
-                ...state,//siempre devolver todo el estado y despues modificar lo que queramos
-                allUsers: action.payload,
-            }
-        default:
-            return state; 
-    }
+const gamesReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case SEARCH_GAMES:
+      return {
+        ...state,
+        filteredGames: action.payload,
+        totalPages: 1, // Como la búsqueda siempre devuelve menos de 100 resultados, establecemos que hay 1 página
+      };
+
+    case FETCH_GAMES:
+      return {
+        ...state,
+        gamesList: action.payload.results,
+        currentPage: action.payload.currentPage,
+        totalPages: action.payload.totalPages,
+      };
+
+    case FILTER_GAMES_BY_GENRE:
+    case FILTER_GAMES_BY_ORIGIN:
+    case SORT_GAMES:
+      return {
+        ...state,
+        filteredGames: action.payload.results,
+        currentPage: action.payload.currentPage,
+        totalPages: action.payload.totalPages,
+      };
+
+    case SET_CURRENT_PAGE:
+      return {
+        ...state,
+        currentPage: action.payload,
+      };
+
+    default:
+      return state;
+  }
 };
 
-export default rootReducer;
-
-/*const gamesReducer = (state = initialState, action) => {
-    switch (action.type) {
-      case SEARCH_GAMES:
-        return {
-          ...state,
-          games: action.payload,
-          currentPage: 1,
-          loading: false,
-          error: null,
-        };
-      case FETCH_GAMES:
-        return {
-          ...state,
-          games: action.payload,
-          loading: false,
-          error: null,
-        };
-      case FILTER_GAMES_BY_GENRE:
-        return {
-          ...state,
-          games: action.payload,
-          currentPage: 1,
-          loading: false,
-          error: null,
-        };
-      case FILTER_GAMES_BY_ORIGIN:
-        return {
-          ...state,
-          games: action.payload,
-          currentPage: 1,
-          loading: false,
-          error: null,
-        };
-      case SORT_GAMES:
-        return {
-          ...state,
-          games: action.payload,
-          currentPage: 1,
-          loading: false,
-          error: null,
-        };
-      case SET_CURRENT_PAGE:
-        return {
-          ...state,
-          currentPage: action.payload,
-          loading: true,
-          error: null,
-        };
-      default:
-        return state;
-    }
-  };*/
+export default gamesReducer;

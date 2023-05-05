@@ -24,7 +24,7 @@ export const searchGames = (searchTerm) => async (dispatch) => {
   // Action para obtener los primeros 100 videojuegos desde la ruta GET /videogames
   export const fetchGames = (page) => async (dispatch) => {
     try {
-      const res = await axios.get(`${BASE_URL}/videogames?page=${page}`);
+      const res = await axios.get(`${BASE_URL}/videogames?page=${page}&limit=100`);
       dispatch({ type: FETCH_GAMES, payload: res.data });
       return res.data;
     } catch (err) {
@@ -36,7 +36,7 @@ export const searchGames = (searchTerm) => async (dispatch) => {
   // Action para filtrar los videojuegos por género
   export const filterGamesByGenre = (genre) => async (dispatch) => {
     try {
-      const res = await axios.get(`${BASE_URL}/genres?genre=${genre}/videogames`);
+      const res = await axios.get(`${BASE_URL}/videogames?genres=${genre}`);
       dispatch({ type: FILTER_GAMES_BY_GENRE, payload: res.data });
       return res.data;
     } catch (err) {
