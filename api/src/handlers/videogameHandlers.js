@@ -1,15 +1,15 @@
 const { getAllVideogames, getVideogameById } = require("../controllers/videogameControllers");
 const { searchVideogamesByName, createVideogame } = require("../controllers/videogameControllers");
 
-const getVideogames = async (req,res) => {
-    try {
-        const videogames = await getAllVideogames();
-        res.json(videogames);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Error in the server"});
-    }
-};
+// const getVideogames = async (req,res) => {
+//     try {
+//         const videogames = await getAllVideogames();
+//         res.json(videogames);
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ message: "Error in the server"});
+//     }
+// };
 
 const getVideogameId = async (req, res) => {
     const { idVideogame } = req.params;
@@ -22,10 +22,15 @@ const getVideogameId = async (req, res) => {
 };
 
 const getVideogamesByName = async (req, res) => {
+    const { name } = req.query
     try {
-      const name = req.query.name;
-      const videogames = await searchVideogamesByName(name);
-      res.json(videogames);
+        let videogames
+        if(name){
+            videogames = await searchVideogamesByName(name);
+        } else {
+            videogames = await getAllVideogames()
+        }
+      res.status(200).json(videogames);
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Error in the server" });
@@ -44,7 +49,6 @@ const postVideogame = async (req, res) => {
 };
 
 module.exports = {
-    getVideogames,
     getVideogameId,
     getVideogamesByName,
     postVideogame

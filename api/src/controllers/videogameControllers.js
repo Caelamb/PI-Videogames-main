@@ -46,67 +46,70 @@ const getVideogameById = async (idVideogame) => {
     }
 };
 
-const searchVideogamesByName = async (name) => {
-    try {
-        // Convertir la cadena recibida en minúsculas
-        const nameLower = name.toLowerCase();
-
-        //Buscar en la API
-        const apiResponse = await axios.get(
-            `https://api.rawg.io/api/games?key=${process.env.API_KEY}&search=${nameLower}&page_size=15`);
-
-        const apiVideogames = apiResponse.data.results.map((vg) => ({
-            id: vg.id,
-            name: vg.name,
-            description: vg.description || "",
-            platforms: vg.platforms.map((platforms) => platforms.platforms.name),
-            image: vg.background_image || "",
-            release_date: vg.release || "",
-            rating: vg.rating || null,
-            genres: vg.genres.map((Genres) => Genres.name),
-            source: "API",
-        }));
-
-        //Buscar en la base de datos
-        const dbVideogames = await Videogame.findAll({
-            where: {
-              name: {
-                [Op.iLike]: `%${nameLower}%`,
-              },
-            },
-            include: {
-              model: Genres,
-              attributes: ["name"],
-              through: { attributes: [] },
-            },
-            limit: 15,
-          });
-      
-          const dbVideogamesFormatted = dbVideogames.map((vg) => ({
-            id: vg.id,
-            name: vg.name,
-            description: vg.description || "",
-            platforms: vg.platforms,
-            image: vg.image || "",
-            release_date: vg.release_date || "",
-            rating: vg.rating || null,
-            genres: vg.genres.map((genre) => genre.name),
-            source: "DB",
-          }));
-
-          const videogames = [...apiVideogames, ...dbVideogamesFormatted];
-
-    if (videogames.length === 0) {
-      throw new Error("No se encontraron resultados para la búsqueda");
+const getVideogameApi = async (name) => {
+    const response = await axios.get(`https://api.rawg.io/api/games?key=${process.env.API_KEY}&search=${name}&page_size=15`);
+    const apiVideogames = response.data.results.map((vg) => {
+      return {
+        id: vg.id,
+        name: vg.name,
+        description: vg.description || "",
+        platforms: vg.platforms.map((platform) => platform.platform.name),
+        image: vg.background_image || "",
+        release_date: vg.released || "",
+        rating: vg.rating || null,
+        genres: vg.genres.map((genre) => genre.name),
+        source: "API",
+      };
+    });
+    return apiVideogames;
+  };
+  
+  const getVideogameDB = async (name) => {
+    const dbVideogames = await Videogame.findAll({
+      where: {
+        name: {
+          [Op.iLike]: `%${name}%`,
+        },
+      },
+      include: {
+        model: Genres,
+        attributes: ["name"],
+        through: { attributes: [] },
+      },
+      limit: 15,
+    });
+  
+    const dbVideogamesFormatted = dbVideogames.map((vg) => ({
+      id: vg.id,
+      name: vg.name,
+      description: vg.description || "",
+      platforms: vg.platforms,
+      image: vg.image || "",
+      release_date: vg.release_date || "",
+      rating: vg.rating || null,
+      genres: vg.genres.map((genre) => genre.name),
+      source: "DB",
+    }));
+  
+    return dbVideogamesFormatted;
+  };
+  
+  const searchVideogamesByName = async (name) => {
+    const VideogameDB = await getVideogameDB(name); // Videojuegos de la base de datos
+    const VideogameApi = await getVideogameApi(name); // Videojuegos de la API
+    const allVideogames = [...VideogameDB, ...VideogameApi]; // Todos los videojuegos
+    if (name) {
+      let filterVideogames = allVideogames.filter(
+        (videogame) => videogame.name.toLowerCase().includes(name.toLowerCase())
+      );
+      if (filterVideogames.length) {
+        return filterVideogames;
+      }
+    } else {
+      return allVideogames;
     }
-
-    return videogames;
-
-    } catch (err) {
-        console.error(err);
-        throw new Error("Error in the server");
-    }
-};
+  };
+  
 
 const createVideogame = async (name, description, release_date, rating, platforms, genres) => {
     try {
