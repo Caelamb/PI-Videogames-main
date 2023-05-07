@@ -8,8 +8,8 @@ function App() {
     <div className="App">
       <h1>Henry Videogames</h1>
       <Home exact path="/" component={Home}/>
-      <Form exact path="/detail/:id" component={Detail} />
-      <Detail exact path="/form" component={Form} />
+      <Form exact path="/form" component={Detail} />
+      <Detail exact path="/detail/:id" component={Form} />
     </div>
   );
 }

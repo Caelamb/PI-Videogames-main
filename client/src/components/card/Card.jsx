@@ -1,12 +1,18 @@
-import React from 'react'
+import React from 'react';
 import styles from "../card/card.module.css";
 
-const Card = ({ user }) => {
+const Card = ({ game }) => {
   return (
-    <div className = {styles.container}>
-      <h3 className = {styles.name}>{user.name}</h3>
-      <p className = {styles.image}>{user.image}</p>
-      <p className = {styles.genres}>{user.genres}</p>
+    <div className={styles["card-container"]}>
+      <img src={game.image} alt={game.name} />
+      <h3>{game.name}</h3>
+      <p>
+        {game.genres.map((genre) => (
+          <span key={genre}>
+            {genre}
+          </span>
+        ))}
+        </p>
     </div>
   )
 }

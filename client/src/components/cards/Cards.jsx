@@ -1,12 +1,12 @@
 import React from 'react'
-import Card from '../card/Card'
+import Card from '../card/Card.jsx'
 import styles from "../cards/cards.module.css";
 
-const Cards = ({ allUsers }) => {
+const Cards = ({ gamesList }) => {
   return (
-    <div className={styles['card-container']}>
-      { allUsers?.map(user => (
-       <Card classname={styles.card} key={user.id} user={user}/> 
+    <div className={styles["card-list"]}>
+      { gamesList?.map(game => (
+       <Card key={game.id} game={game}/> 
       ))}
     </div>
   )

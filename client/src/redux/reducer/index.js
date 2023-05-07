@@ -9,7 +9,6 @@ import {
 const initialState = {
   gamesList: [],
   filteredGames: [],
-  currentGame: {},
   currentPage: 1,
   totalPages: 0,
 };
