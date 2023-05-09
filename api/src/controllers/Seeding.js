@@ -27,9 +27,24 @@ const seedGenres = async () => {
 
 const seedDatabase = async () => {
   try {
-    // Obtener videojuegos desde la API
-    const response = await axios.get(API_URL);
-    const games = response.data.results;
+    let games = [];
+
+    // Realizar solicitudes hasta alcanzar 100 juegos o agotar los resultados disponibles
+    let page = 1;
+    while (games.length < 100) {
+      const response = await axios.get(`${API_URL}&page=${page}&page_size=40`);
+      const pageGames = response.data.results;
+      games = games.concat(pageGames);
+
+      if (response.data.next === null) {
+        break; // No hay más resultados disponibles
+      }
+
+      page++;
+    }
+
+    // Tomar los primeros 100 juegos
+    games = games.slice(0, 100);
 
     // Mapear los videojuegos a un formato compatible con el modelo de la base de datos
     const videogameData = games.map(game => {
@@ -44,14 +59,14 @@ const seedDatabase = async () => {
       }
     });
 
-    // Guardar los videojuegos en la base de datos
-    await Videogame.bulkCreate(videogameData, { ignoreDuplicates: true });
-
     // Crear géneros en la base de datos
     await seedGenres();
 
     // Obtener los géneros desde la base de datos
     const genres = await Genres.findAll();
+    
+    // Guardar los videojuegos en la base de datos
+    await Videogame.bulkCreate(videogameData, { ignoreDuplicates: true });
 
     // Asociar géneros a los videojuegos
     for (let i = 0; i < games.length; i++) {
