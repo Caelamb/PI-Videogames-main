@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../card/card.module.css';
+import { Link } from "react-router-dom";
 
 const Card = ({ game }) => {
   let genres = game.genres || game.Genres || []; // Verificar ambas propiedades
@@ -10,6 +11,7 @@ const Card = ({ game }) => {
 
   return (
     <div className={styles['card-container']}>
+      <Link to={`/detail/${game.id}`}>
       <img src={game.image} alt={game.name} />
       <h3>{game.name}</h3>
       <p>
@@ -17,6 +19,7 @@ const Card = ({ game }) => {
           <span key={`${game.id}-${genre}`}>{genre}</span>
         ))}
       </p>
+      </Link>
     </div>
   );
 };

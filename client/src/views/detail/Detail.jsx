@@ -3,9 +3,13 @@ import React from 'react'
 const Detail = () => {
   return (
     <div>
-      <p>soy el detail</p>
+      soy el detalle
     </div>
   )
 }
 
-export default Detail;
+export default Detail
+
+
+
+

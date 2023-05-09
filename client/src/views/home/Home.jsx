@@ -17,7 +17,7 @@ import Pagination from '../../components/pagination/Pagination';
 import Navbar from '../../components/navbar/Navbar.jsx';
 
 const Home = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch();;
   const videogames = useSelector((state) => state.videogames);
   const currentPage = useSelector((state) => state.currentPage);
 
@@ -63,7 +63,9 @@ const Home = () => {
         onFilterBySource={handleFilterBySource}
         onSortByAlphabet={handleSortByAlphabet}
         onSortByRating={handleSortByRating}/>
-      <Cards videogames={displayedVideogames}/>
+      <Cards 
+        videogames={displayedVideogames}
+        />
       <Pagination 
         onChangePage={handleChangePage} 
         currentPage={currentPage}

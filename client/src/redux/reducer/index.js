@@ -7,7 +7,7 @@ import {
   FILTER_VIDEOGAMES_BY_SOURCE,
   SORT_VIDEOGAMES_BY_ALPHABET,
   SORT_VIDEOGAMES_BY_RATING,
-  CHANGE_PAGE
+  CHANGE_PAGE,
    } from '../actions';
 
 const initialState = {
@@ -15,6 +15,11 @@ const initialState = {
   loading: false,
   error: null,
   currentPage: 1,
+  gameDetails: {
+    loading: false,
+    error: null,
+    game: null,
+  },
 };
 
 const gamesReducer = (state = initialState, action) => {
@@ -42,12 +47,73 @@ const gamesReducer = (state = initialState, action) => {
       case FILTER_VIDEOGAMES_BY_GENRE:
       case FILTER_VIDEOGAMES_BY_SOURCE:
       case SORT_VIDEOGAMES_BY_ALPHABET:
+        const alphabetOrder = action.payload;
+        if (alphabetOrder === 'asc') {
+        const sortedByAlphabet = state.videogames.slice().sort((a, b) => {
+          return a.name.localeCompare(b.name);
+        });
+        return {
+          ...state,
+          videogames: sortedByAlphabet,
+          loading: false,
+          error: null,
+        };
+      } else if (alphabetOrder === 'desc') {
+        const sortedByAlphabet = state.videogames.slice().sort((a, b) => {
+          return b.name.localeCompare(a.name);
+        });
+        return {
+          ...state,
+          videogames: sortedByAlphabet,
+          loading: false,
+          error: null,
+        };
+      } else {
+        return state; // No se realiza ninguna modificación
+      }
       case SORT_VIDEOGAMES_BY_RATING:
-         // Puedes implementar la lógica correspondiente para manejar estos casos
-        return state;
+        const ratingOrder = action.payload;
+        if (ratingOrder === 'asc') {
+          const sortedByRating = state.videogames.slice().sort((a, b) => {
+            return a.rating - b.rating;
+          });
+          return {
+            ...state,
+            videogames: sortedByRating,
+            loading: false,
+            error: null,
+          };
+        } else if (ratingOrder === 'desc') {
+          const sortedByRating = state.videogames.slice().sort((a, b) => {
+            return b.rating - a.rating;
+          });
+          return {
+            ...state,
+            videogames: sortedByRating,
+            loading: false,
+            error: null,
+          };
+        } else {
+          return state; // No se realiza ninguna modificación
+        }
     default:
       return state;
   }
 };
 
 export default gamesReducer;
+
+
+
+
+
+  // const genre = action.payload;
+  // const filteredByGenre = state.allvideogames.filter((game) =>
+  //   game.Genres && game.Genres.toLowerCase().includes(genre.toLowerCase())
+  // );
+  // return {
+  //   ...state,
+  //   allvideogames: filteredByGenre,
+  //   loading: false,
+  //   error: null,
+  // };
