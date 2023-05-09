@@ -4,8 +4,20 @@ const { Op } = require("sequelize");
 
 const getAllVideogames = async () => {
     try {
-        const videogames = await Videogame.findAll();
-        return videogames;
+        const videogames = await Videogame.findAll({
+          include: [{
+            model: Genres,
+            attributes: ['name'],
+            through: { attributes: [] },
+          }]
+        });
+        // Transformar los nombres de los géneros en una cadena separada por comas
+     const transformedVideogames = videogames.map(game => ({
+       ...game.toJSON(),
+      Genres: game.Genres.map(genre => genre.name).join(', ')
+     }));
+
+    return transformedVideogames;
     } catch (err) {
         console.error(err);
         throw new Error("Error in the server");
@@ -87,26 +99,39 @@ const getVideogameApi = async (name) => {
       image: vg.image || "",
       release_date: vg.release_date || "",
       rating: vg.rating || null,
-      genres: vg.genres.map((genre) => genre.name),
+      genres: vg.Genres.map((genre) => genre.name),
       source: "DB",
     }));
   
     return dbVideogamesFormatted;
+  };
+
+  const removeDuplicates = (array) => {
+    const uniqueIds = new Set();
+    return array.filter((item) => {
+      if (!uniqueIds.has(item.id)) {
+        uniqueIds.add(item.id);
+        return true;
+      }
+      return false;
+    });
   };
   
   const searchVideogamesByName = async (name) => {
     const VideogameDB = await getVideogameDB(name); // Videojuegos de la base de datos
     const VideogameApi = await getVideogameApi(name); // Videojuegos de la API
     const allVideogames = [...VideogameDB, ...VideogameApi]; // Todos los videojuegos
+    const uniqueVideogames = removeDuplicates(allVideogames)
+
     if (name) {
-      let filterVideogames = allVideogames.filter(
+      let filterVideogames = uniqueVideogames.filter(
         (videogame) => videogame.name.toLowerCase().includes(name.toLowerCase())
       );
       if (filterVideogames.length) {
         return filterVideogames;
       }
     } else {
-      return allVideogames;
+      return uniqueVideogames;
     }
   };
   
