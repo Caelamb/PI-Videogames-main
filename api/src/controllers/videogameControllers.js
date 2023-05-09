@@ -1,6 +1,7 @@
 const axios = require("axios");
 const { Videogame, Genres } = require("../db");
 const { Op } = require("sequelize"); 
+const { API_KEY } = process.env;
 
 const getAllVideogames = async () => {
     try {
@@ -37,7 +38,7 @@ const getVideogameById = async (idVideogame) => {
         return videogame;
       } else {
         // Si no existe en la base de datos, hacer una llamada a la API
-        const response = await axios.get(`https://api.rawg.io/api/games/${idVideogame}?key=${process.env.API_KEY}`)
+        const response = await axios.get(`https://api.rawg.io/api/games/${idVideogame}?key=${API_KEY}`)
 
         // Crear un objeto con la información del videojuego
         const videogameDetail = {
@@ -48,6 +49,7 @@ const getVideogameById = async (idVideogame) => {
             rating: response.data.rating,
             platforms: response.data.platforms.map((platform) => platform.platform.name),
             genres: response.data.genres.map((genre) => genre.name),
+            image: response.data.background_image,
           };
       
           return videogameDetail;
@@ -59,7 +61,7 @@ const getVideogameById = async (idVideogame) => {
 };
 
 const getVideogameApi = async (name) => {
-    const response = await axios.get(`https://api.rawg.io/api/games?key=${process.env.API_KEY}&search=${name}&page_size=15`);
+    const response = await axios.get(`https://api.rawg.io/api/games?key=${API_KEY}&search=${name}&page_size=15`);
     const apiVideogames = response.data.results.map((vg) => {
       return {
         id: vg.id,
@@ -97,7 +99,7 @@ const getVideogameApi = async (name) => {
       description: vg.description || "",
       platforms: vg.platforms,
       image: vg.image || "",
-      release_date: vg.release_date || "",
+      release_date: vg.released || "",
       rating: vg.rating || null,
       genres: vg.Genres.map((genre) => genre.name),
       source: "DB",

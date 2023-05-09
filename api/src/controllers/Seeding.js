@@ -51,10 +51,10 @@ const seedDatabase = async () => {
       return {
         id: game.id.toString(), // Para evitar conflictos con ids ya existentes en la db
         name: game.name,
-        description: game.description_raw,
+        description: game.description_raw ?? "No disponible",
         platforms: game.platforms.map(platform => platform.platform.name).join(', '),
         image: game.background_image,
-        release_date: game.release_date,
+        release_date: game.released ?? "No disponible",
         rating: game.rating,
       }
     });
