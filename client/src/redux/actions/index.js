@@ -46,6 +46,21 @@ const BASE_URL = 'http://localhost:3001';
   };
 };
 
+export const fetchVideoGameDetails = (id) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/videogames/${id}`);
+      const videoGameDetails = response.data;
+      return dispatch({ 
+        type: FETCH_VIDEOGAME_SUCCESS, 
+        payload: videoGameDetails 
+      });
+    } catch (error) {
+      dispatch({ type: FETCH_VIDEOGAME_FAILURE, payload: error.message });
+    }
+  };
+};
+
 export const filterVideogamesByGenre = (genre) => {
   return { type: FILTER_VIDEOGAMES_BY_GENRE, payload: genre };
 };

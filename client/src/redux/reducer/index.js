@@ -8,6 +8,8 @@ import {
   SORT_VIDEOGAMES_BY_ALPHABET,
   SORT_VIDEOGAMES_BY_RATING,
   CHANGE_PAGE,
+  FETCH_VIDEOGAME_SUCCESS,
+  FETCH_VIDEOGAME_FAILURE
    } from '../actions';
 
 const initialState = {
@@ -15,11 +17,7 @@ const initialState = {
   loading: false,
   error: null,
   currentPage: 1,
-  gameDetails: {
-    loading: false,
-    error: null,
-    game: null,
-  },
+  videoGameDetails: {},
 };
 
 const gamesReducer = (state = initialState, action) => {
@@ -96,6 +94,18 @@ const gamesReducer = (state = initialState, action) => {
         } else {
           return state; // No se realiza ninguna modificación
         }
+        case FETCH_VIDEOGAME_SUCCESS:
+          return {
+            ...state,
+            videoGameDetails: action.payload,
+            error: null
+          };
+        case FETCH_VIDEOGAME_FAILURE:
+          return {
+            ...state,
+            videoGameDetails: {},
+            error: action.payload
+          };
     default:
       return state;
   }
