@@ -6,7 +6,7 @@ const Cards = ({ videogames }) => {
   return (
     <div className={styles["card-list"]}>
       {videogames?.map(game => (
-       <Card key={game.id} game={game}/> 
+       <Card key={game.id} game={game} /> 
       ))}
     </div>
   )
