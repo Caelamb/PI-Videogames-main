@@ -7,7 +7,7 @@ const Card = ({ game }) => {
       <img src={game.image} alt={game.name} />
       <h3>{game.name}</h3>
       <p>
-        {game.genres.map((genre) => (
+        {game.genres?.map((genre) => (
           <span key={genre}>
             {genre}
           </span>

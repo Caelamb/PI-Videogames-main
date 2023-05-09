@@ -1,6 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGames, filterGamesByGenre, filterGamesByOrigin, searchGames, setCurrentPage, sortGames } from '../../redux/actions/index';
+
+import {
+  fetchInitialVideogames,
+  searchVideogames,
+  filterVideogamesByGenre,
+  filterVideogamesBySource,
+  sortVideogamesByAlphabet,
+  sortVideogamesByRating,
+  changePage,
+} from "../../redux/actions/index"
+
 import Cards from '../../components/cards/Cards.jsx';
 import Filters from '../../components/filter/Filters';
 import Pagination from '../../components/pagination/Pagination';
@@ -8,47 +18,56 @@ import Navbar from '../../components/navbar/Navbar.jsx';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const gamesList = useSelector(state => state.gamesList);
-  const currentPage = useSelector(state => state.currentPage);
-  const filteredGames = useSelector(state => state.filteredGames);
-  const totalPages = useSelector(state => state.totalPages);
+  const videogames = useSelector((state) => state.videogames);
+  const currentPage = useSelector((state) => state.currentPage);
 
   useEffect(() => {
-    dispatch(fetchGames(currentPage));
-  }, [dispatch, currentPage]);
+    dispatch(fetchInitialVideogames());
+  }, [dispatch]);
 
-  const handleSearch = (searchTerm) => {
-    dispatch(searchGames(searchTerm));
+  const handleSearch = (searchQuery) => {
+    dispatch(searchVideogames(searchQuery));
   };
 
-  const handleGenreFilter = (genre) => {
-    dispatch(filterGamesByGenre(genre));
+  const handleFilterByGenre = (genre) => {
+    dispatch(filterVideogamesByGenre(genre));
   };
 
-  const handleOriginFilter = (origin) => {
-    dispatch(filterGamesByOrigin(origin));
+  const handleFilterBySource = (source) => {
+    dispatch(filterVideogamesBySource(source));
   };
 
-  const handleSort = (sortBy, sortOrder) => {
-    dispatch(sortGames(sortBy, sortOrder));
+  const handleSortByAlphabet = (order) => {
+    dispatch(sortVideogamesByAlphabet(order));
   };
 
-  const handlePageChange = (page) => {
-    dispatch(setCurrentPage(page));
+  const handleSortByRating = (order) => {
+    dispatch(sortVideogamesByRating(order));
   };
+
+  const handleChangePage = (pageNumber) => {
+    dispatch(changePage(pageNumber));
+  };
+
+  // Lógica de paginación y límite de juegos por página
+  const itemsPerPage = 15;
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedVideogames = videogames.slice(startIndex, endIndex);
 
   return (
     <div>
       <Navbar onSearch={handleSearch} />
       <Filters 
-        onGenreFilter={handleGenreFilter} 
-        onOriginFilter={handleOriginFilter} 
-        onSort={handleSort} />
-      <Cards gamesList={filteredGames.length > 0 ? filteredGames : gamesList} />
+        onFilterByGenre={handleFilterByGenre}
+        onFilterBySource={handleFilterBySource}
+        onSortByAlphabet={handleSortByAlphabet}
+        onSortByRating={handleSortByRating}/>
+      <Cards videogames={displayedVideogames}/>
       <Pagination 
+        onChangePage={handleChangePage} 
         currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange} />
+        totalPages={Math.ceil(videogames.length / itemsPerPage)} />
     </div>
   );
 };

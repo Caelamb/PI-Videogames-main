@@ -1,51 +1,50 @@
 import { 
-  SEARCH_GAMES, 
-  FETCH_GAMES, 
-  FILTER_GAMES_BY_GENRE, 
-  FILTER_GAMES_BY_ORIGIN, 
-  SORT_GAMES, 
-  SET_CURRENT_PAGE } from '../actions';
+  FETCH_INITIAL_VIDEOGAMES_SUCCESS, 
+  FETCH_INITIAL_VIDEOGAMES_FAILURE,
+  SEARCH_VIDEOGAMES_SUCCESS,
+  SEARCH_VIDEOGAMES_FAILURE,
+  FILTER_VIDEOGAMES_BY_GENRE,
+  FILTER_VIDEOGAMES_BY_SOURCE,
+  SORT_VIDEOGAMES_BY_ALPHABET,
+  SORT_VIDEOGAMES_BY_RATING,
+  CHANGE_PAGE
+   } from '../actions';
 
 const initialState = {
-  gamesList: [],
-  filteredGames: [],
+  videogames: [],
+  loading: false,
+  error: null,
   currentPage: 1,
-  totalPages: 0,
 };
 
 const gamesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SEARCH_GAMES:
+    case FETCH_INITIAL_VIDEOGAMES_SUCCESS:
+      case SEARCH_VIDEOGAMES_SUCCESS:
       return {
         ...state,
-        filteredGames: action.payload,
-        totalPages: 1, // Como la búsqueda siempre devuelve menos de 100 resultados, establecemos que hay 1 página
+        videogames: action.payload,
+        loading: false,
+        error: null,
       };
-
-    case FETCH_GAMES:
-      return {
-        ...state,
-        gamesList: action.payload.results,
-        currentPage: action.payload.currentPage,
-        totalPages: action.payload.totalPages,
-      };
-
-    case FILTER_GAMES_BY_GENRE:
-    case FILTER_GAMES_BY_ORIGIN:
-    case SORT_GAMES:
-      return {
-        ...state,
-        filteredGames: action.payload.results,
-        currentPage: action.payload.currentPage,
-        totalPages: action.payload.totalPages,
-      };
-
-    case SET_CURRENT_PAGE:
-      return {
-        ...state,
-        currentPage: action.payload,
-      };
-
+      case FETCH_INITIAL_VIDEOGAMES_FAILURE:
+      case SEARCH_VIDEOGAMES_FAILURE:
+        return {
+          ...state,
+          loading: false,
+          error: action.payload,
+        };
+        case CHANGE_PAGE:
+          return {
+            ...state,
+            currentPage: action.payload,
+          }
+      case FILTER_VIDEOGAMES_BY_GENRE:
+      case FILTER_VIDEOGAMES_BY_SOURCE:
+      case SORT_VIDEOGAMES_BY_ALPHABET:
+      case SORT_VIDEOGAMES_BY_RATING:
+         // Puedes implementar la lógica correspondiente para manejar estos casos
+        return state;
     default:
       return state;
   }

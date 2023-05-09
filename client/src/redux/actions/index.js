@@ -1,77 +1,66 @@
 import axios from "axios";
 
-export const SEARCH_GAMES = 'SEARCH_GAMES';
-export const FETCH_GAMES = 'FETCH_GAMES';
-export const FILTER_GAMES_BY_GENRE = 'FILTER_GAMES_BY_GENRE';
-export const FILTER_GAMES_BY_ORIGIN = 'FILTER_GAMES_BY_ORIGIN';
-export const SORT_GAMES = 'SORT_GAMES';
-export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
+export const FETCH_INITIAL_VIDEOGAMES_SUCCESS = 'FETCH_INITIAL_VIDEOGAMES_SUCCESS';
+export const FETCH_INITIAL_VIDEOGAMES_FAILURE = 'FETCH_INITIAL_VIDEOGAMES_FAILURE';
+export const SEARCH_VIDEOGAMES_SUCCESS = 'SEARCH_VIDEOGAMES_SUCCESS';
+export const SEARCH_VIDEOGAMES_FAILURE = 'SEARCH_VIDEOGAMES_FAILURE';
+export const FILTER_VIDEOGAMES_BY_GENRE = 'FILTER_VIDEOGAMES_BY_GENRE';
+export const FILTER_VIDEOGAMES_BY_SOURCE = 'FILTER_VIDEOGAMES_BY_SOURCE';
+export const SORT_VIDEOGAMES_BY_ALPHABET = 'SORT_VIDEOGAMES_BY_ALPHABET';
+export const SORT_VIDEOGAMES_BY_RATING = 'SORT_VIDEOGAMES_BY_RATING';
+export const CHANGE_PAGE = 'CHANGE_PAGE';
+
 
 const BASE_URL = 'http://localhost:3001';
 
-// Action para buscar videojuegos por nombre
-export const searchGames = (searchTerm) => async (dispatch) => {
+// Action para buscar videojuegos por iniciales
+ export const fetchInitialVideogames = () => {
+  return async (dispatch) => {
     try {
-      const res = await axios.get(`${BASE_URL}/videogames?name=${searchTerm}`);
-      dispatch({ type: SEARCH_GAMES, payload: res.data });
-      return res.data;
-    } catch (err) {
-      console.error(err);
-      return null;
+      const response = await axios.get(`${BASE_URL}/videogames`);
+      const allVideogames = response.data;
+      return dispatch({ 
+        type: FETCH_INITIAL_VIDEOGAMES_SUCCESS, 
+        payload: allVideogames
+      });
+    } catch (error) {
+      dispatch({ type: FETCH_INITIAL_VIDEOGAMES_FAILURE, payload: error.message });
+    }
+  }
+ }
+
+ // Acción para obtener los videojuegos nombre
+ export const searchVideogames = (searchQuery) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/videogames?name=${searchQuery}`);
+      const videogames = response.data;
+      return dispatch({ 
+        type: SEARCH_VIDEOGAMES_SUCCESS, 
+        payload: videogames 
+      });
+    } catch (error) {
+      dispatch({ type: SEARCH_VIDEOGAMES_FAILURE, payload: error.message });
     }
   };
-  
-  // Action para obtener los primeros 100 videojuegos desde la ruta GET /videogames
-  export const fetchGames = (page) => async (dispatch) => {
-    try {
-      const res = await axios.get(`${BASE_URL}/videogames?page=${page}&limit=100`);
-      dispatch({ type: FETCH_GAMES, payload: res.data });
-      return res.data;
-    } catch (err) {
-      console.error(err);
-      return null;
-    }
-  };
-  
-  // Action para filtrar los videojuegos por género
-  export const filterGamesByGenre = (genre) => async (dispatch) => {
-    try {
-      const res = await axios.get(`${BASE_URL}/videogames?genres=${genre}`);
-      dispatch({ type: FILTER_GAMES_BY_GENRE, payload: res.data });
-      return res.data;
-    } catch (err) {
-      console.error(err);
-      return null;
-    }
-  };
-  
-  // Action para filtrar los videojuegos por origen (API o base de datos)
-  export const filterGamesByOrigin = (origin) => async (dispatch) => {
-    try {
-      const res = await axios.get(`${BASE_URL}/videogames?origin=${origin}`);
-      dispatch({ type: FILTER_GAMES_BY_ORIGIN, payload: res.data });
-      return res.data;
-    } catch (err) {
-      console.error(err);
-      return null;
-    }
-  };
-  
-  // Action para ordenar los videojuegos por nombre o por rating, ascendente o descendente
-  export const sortGames = (sortBy, sortOrder) => async (dispatch) => {
-    try {
-      const res = await axios.get(`${BASE_URL}/videogames?sortBy=${sortBy}&sortOrder=${sortOrder}`);
-      dispatch({ type: SORT_GAMES, payload: res.data });
-      return res.data;
-    } catch (err) {
-      console.error(err);
-      return null;
-    }
-  };
-  
-  // Action para cambiar la página actual del paginado
-  export const setCurrentPage = (page) => async (dispatch) => {
-    dispatch({ type: SET_CURRENT_PAGE, payload: page });
-    return dispatch(fetchGames(page));
-  };
-  
+};
+
+export const filterVideogamesByGenre = (genre) => {
+  return { type: FILTER_VIDEOGAMES_BY_GENRE, payload: genre };
+};
+
+export const filterVideogamesBySource = (source) => {
+  return { type: FILTER_VIDEOGAMES_BY_SOURCE, payload: source };
+};
+
+export const sortVideogamesByAlphabet = (order) => {
+  return { type: SORT_VIDEOGAMES_BY_ALPHABET, payload: order };
+};
+
+export const sortVideogamesByRating = (order) => {
+  return { type: SORT_VIDEOGAMES_BY_RATING, payload: order };
+};
+
+export const changePage = (pageNumber) => {
+  return { type: CHANGE_PAGE, payload: pageNumber };
+};
