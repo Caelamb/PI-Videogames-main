@@ -1,10 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getByGenres, getAllPlatforms } from "../../redux/actions/index";
 
-const Filters = ({ onFilterByGenre, onFilterBySource, onSortByAlphabet, onSortByRating }) => {
+const Filters = ({ 
+  onFilterByGenre,
+  onFilterBySource,
+  onSortByAlphabet, 
+  onSortByRating 
+}) => {
+  const dispatch = useDispatch();
+  const genres = useSelector((state) => state.Genres);
+  const plataforms = useSelector((state) => state.plataforms);
+
   const [selectedGenre, setSelectedGenre] = useState("");
   const [selectedSource, setSelectedSource] = useState("");
   const [alphabetOrder, setAlphabetOrder] = useState("");
   const [ratingOrder, setRatingOrder] = useState("");
+
+  useEffect(() => {
+    dispatch(getByGenres());
+    dispatch(getAllPlatforms());
+  }, [dispatch]);
 
   const handleGenreChange = (event) => {
     setSelectedGenre(event.target.value);
@@ -31,30 +47,29 @@ const Filters = ({ onFilterByGenre, onFilterBySource, onSortByAlphabet, onSortBy
       <div className="filter-item">
         <label htmlFor="genre-select">Genre: </label>
         <select id="genre-select" value={selectedGenre} onChange={handleGenreChange}>
-          <option value="">All genres</option>
-          <option value="Action">Action</option>
-          <option value="Adventure">Adventure</option>
-          <option value="Role-playing">Role-playing</option>
-          <option value="Simulation">Simulation</option>
-          <option value="Strategy">Strategy</option>
-          <option value="Sports">Sports</option>
+          <option value="">All Videogames</option>
+          {genres.map((genre) => (
+            <option key={genre.id} value={genre.name}>
+              {genre.name}
+            </option>
+          ))}
         </select>
       </div>
       <div className="filter-item">
         <label htmlFor="source-select">Source: </label>
         <select id="source-select" value={selectedSource} onChange={handleSourceChange}>
-          <option value="">All sources</option>
-          <option value="PC">PC</option>
-          <option value="PlayStation">PlayStation</option>
-          <option value="Xbox">Xbox</option>
-          <option value="Nintendo">Nintendo</option>
-          <option value="Mobile">Mobile</option>
+        <option value="">All Videogames</option>
+          {plataforms.map((platform) => (
+            <option key={platform} value={platform}>
+              {platform}
+            </option>
+          ))}
         </select>
       </div>
       <div className="filter-item">
         <label htmlFor="alphabet-select">Sort by Alphabet: </label>
         <select id="alphabet-select" value={alphabetOrder} onChange={handleAlphabetChange}>
-          <option value="">None</option>
+          <option value="">All Videogames</option>
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>
@@ -62,7 +77,7 @@ const Filters = ({ onFilterByGenre, onFilterBySource, onSortByAlphabet, onSortBy
       <div className="filter-item">
         <label htmlFor="rating-select">Sort by Rating: </label>
         <select id="rating-select" value={ratingOrder} onChange={handleRatingChange}>
-          <option value="">None</option>
+          <option value="">All Videogames</option>
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>
