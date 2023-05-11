@@ -63,13 +63,13 @@ const Home = () => {
         onFilterBySource={handleFilterBySource}
         onSortByAlphabet={handleSortByAlphabet}
         onSortByRating={handleSortByRating}/>
-      <Cards 
-        videogames={displayedVideogames}
-        />
       <Pagination 
         onChangePage={handleChangePage} 
         currentPage={currentPage}
         totalPages={Math.ceil(videogames.length / itemsPerPage)} />
+      <Cards 
+        videogames={displayedVideogames}
+        />
     </div>
   );
 };

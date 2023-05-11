@@ -3,4 +3,23 @@
     color: #fff;
     padding: 1rem;
   }
+
+  .button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #4287f5;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #3366cc;
+  }
+  
+  .button:active {
+    background-color: #27408b;
+  }
   

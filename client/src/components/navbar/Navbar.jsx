@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styles from "../navbar/navbar.module.css";
+import { Link } from "react-router-dom";
 
 const Navbar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,6 +20,7 @@ const Navbar = ({ onSearch }) => {
            onChange={(event) => setSearchTerm(event.target.value)}/>
         <button type='submit' >Buscar</button>
       </form>
+      <Link to="/form" className={styles.button}>Crear Videojuego</Link>
     </div>
   )
 }
