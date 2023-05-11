@@ -10,7 +10,7 @@ const Filters = ({
 }) => {
   const dispatch = useDispatch();
   const genres = useSelector((state) => state.Genres);
-  const plataforms = useSelector((state) => state.plataforms);
+  const plataforms = useSelector((state) => state.platforms);
 
   const [selectedGenre, setSelectedGenre] = useState("");
   const [selectedSource, setSelectedSource] = useState("");

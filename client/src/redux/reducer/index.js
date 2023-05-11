@@ -17,7 +17,7 @@ const initialState = {
   CopyVideogames: [],
   videoGameDetails: {},
   Genres: [],
-  plataforms: [],
+  platforms: [],
   loading: false,
   error: null,
   currentPage: 1,
@@ -60,7 +60,7 @@ const gamesReducer = (state = initialState, action) => {
     case GET_ALL_PLATFORMS:
       return {
         ...state,
-        plataforms: action.payload
+        platforms: action.payload
       }
     
     case FORM_VIDEOGAME_SUCCESS:

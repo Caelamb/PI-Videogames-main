@@ -1,6 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { FormVideogames, getByGenres, getAllPlatforms } from "../../redux/actions";
 
-const Create = () => {
+const Form = () => {
+  const dispatch = useDispatch();
+  const genres = useSelector(state => state.Genres);
+  const platforms = useSelector(state => state.platforms);
+
   const [input, setInput] = useState({
     name: "",
     image: "",
@@ -15,6 +21,11 @@ const Create = () => {
     name: "",
     rating: "",
   });
+
+  useEffect(() => {
+    dispatch(getByGenres());
+    dispatch(getAllPlatforms());
+  }, [dispatch]);
 
   const validate = (input) => {
     let errors = {};
@@ -57,8 +68,19 @@ const Create = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (Object.keys(error).length === 0) {
-      // Realizar la acción de creación del videojuego
-      alert("HACER DISPATCH O PETICIÓN AXIOS PARA CREAR EL VIDEOJUEGO");
+      // Dispatch de la acción para crear el videojuego
+      dispatch(FormVideogames(input));
+
+      // Limpiar los campos del formulario
+      setInput({
+        name: "",
+        image: "",
+        description: "",
+        platforms: "",
+        releaseDate: "",
+        rating: "",
+        genres: [],
+      });
     } else {
       alert("FALTAN CAMPOS A COMPLETAR O HAY ERRORES EN LOS CAMPOS");
     }
@@ -74,16 +96,16 @@ const Create = () => {
     >
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Nombre: </label>
+          <label>Name: </label>
           <input name="name" value={input.name} onChange={handleChange} />
         </div>
         <span>{error.name}</span>
         <div>
-          <label>Imagen: </label>
+          <label>Image: </label>
           <input name="image" value={input.image} onChange={handleChange} />
         </div>
         <div>
-          <label>Descripción: </label>
+          <label>Description: </label>
           <input
             name="description"
             value={input.description}
@@ -91,23 +113,31 @@ const Create = () => {
           />
         </div>
         <div>
-          <label>Plataformas: </label>
-          <input
+          <label>Platforms: </label>
+          <select
             name="platforms"
             value={input.platforms}
             onChange={handleChange}
-          />
+          >
+            <option value="">Select a platform</option>
+            {platforms.map((platform, index) => (
+              <option value={platform} key={index}>
+                {platform}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
-          <label>Fecha de lanzamiento: </label>
+        <label>Release Date: </label>
           <input
             name="releaseDate"
+            type="date"
             value={input.releaseDate}
             onChange={handleChange}
           />
         </div>
         <div>
-          <label>Rating: </label>
+          <label>Ratting: </label>
           <input
             name="rating"
             type="number"
@@ -117,28 +147,34 @@ const Create = () => {
         </div>
         <span>{error.rating}</span>
         <div>
-          <label>Géneros: </label>
+          <label>Genres: </label>
           <select
             name="genres"
             multiple
             value={input.genres}
             onChange={handleGenreChange}
-          >
-            <option value="accion">Acción</option>
-            <option value="aventura">Aventura</option>
-            <option value="estrategia">Estrategia</option>
-            <option value="deportes">Deportes</option>
-            <option value="rpg">RPG</option>
-            <option value="shooter">Shooter</option>
-            <option value="simulacion">Simulación</option>
-            </select>
-            </div>
-            {Object.keys(error).length === 0 ? (
-            <button type="submit">Crear</button>
-            ) : null}
-            </form>
-            </div>
-            );
-            };
-            
-            export default Create;
+              > 
+        <option value="">Select a platform</option>
+            {genres.map((genre) => (
+              <option value={genre.id} key={genre.id}>
+                {genre.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <button type="submit">Add Video Game</button>
+      </form>
+    </div>
+  );
+};
+
+export default Form;
+
+
+
+
+
+
+
+
+
