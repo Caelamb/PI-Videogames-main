@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FormVideogames, getByGenres, getAllPlatforms } from "../../redux/actions";
+import { Link } from "react-router-dom";
+import styles from "../form/form.module.css";
 
 const Form = () => {
   const dispatch = useDispatch();
@@ -65,6 +67,19 @@ const Form = () => {
     });
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setInput({
+        ...input,
+        image: reader.result,
+      });
+    };
+  };
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (Object.keys(error).length === 0) {
@@ -102,7 +117,7 @@ const Form = () => {
         <span>{error.name}</span>
         <div>
           <label>Image: </label>
-          <input name="image" value={input.image} onChange={handleChange} />
+          <input type="file" accept="image/*" name="image" onChange={handleImageChange} />
         </div>
         <div>
           <label>Description: </label>
@@ -163,6 +178,7 @@ const Form = () => {
           </select>
         </div>
         <button type="submit">Add Video Game</button>
+      <Link to="/home" className={styles.button}>Go back to the main page</Link>
       </form>
     </div>
   );

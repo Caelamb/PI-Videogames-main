@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .image {
+    max-width: 400px;
+    height: auto;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .description {
+    text-align: center;
+    font-size: 18px;
+  }
+  
+  .info {
+    font-size: 16px;
+  }
+  
+  .button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #4287f5;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #3366cc;
+  }
+  
+  .button:active {
+    background-color: #27408b;
+  }

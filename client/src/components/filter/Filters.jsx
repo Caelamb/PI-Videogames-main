@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getByGenres, getAllPlatforms } from "../../redux/actions/index";
+import styles from "../filter/filters.module.css";
 
 const Filters = ({ 
   onFilterByGenre,
@@ -43,10 +44,10 @@ const Filters = ({
   };
 
   return (
-    <div className="filters-container">
-      <div className="filter-item">
-        <label htmlFor="genre-select">Genre: </label>
-        <select id="genre-select" value={selectedGenre} onChange={handleGenreChange}>
+    <div className={styles["filters-container"]}>
+      <div className={styles["filter-item"]}>
+        <label className={styles.label} htmlFor="genre-select">Genre: </label>
+        <select  className={styles.select} id="genre-select" value={selectedGenre} onChange={handleGenreChange}>
           <option value="">All Videogames</option>
           {genres.map((genre) => (
             <option key={genre.id} value={genre.name}>
@@ -55,9 +56,9 @@ const Filters = ({
           ))}
         </select>
       </div>
-      <div className="filter-item">
-        <label htmlFor="source-select">Source: </label>
-        <select id="source-select" value={selectedSource} onChange={handleSourceChange}>
+      <div className={styles["filter-item"]}>
+        <label className={styles.label} htmlFor="source-select">Source: </label>
+        <select className={styles.select} id="source-select" value={selectedSource} onChange={handleSourceChange}>
         <option value="">All Videogames</option>
           {plataforms.map((platform) => (
             <option key={platform} value={platform}>
@@ -66,17 +67,17 @@ const Filters = ({
           ))}
         </select>
       </div>
-      <div className="filter-item">
-        <label htmlFor="alphabet-select">Sort by Alphabet: </label>
-        <select id="alphabet-select" value={alphabetOrder} onChange={handleAlphabetChange}>
+      <div className={styles["filter-item"]}>
+        <label className={styles.label} htmlFor="alphabet-select">Sort by Alphabet: </label>
+        <select className={styles.select} id="alphabet-select" value={alphabetOrder} onChange={handleAlphabetChange}>
           <option value="">All Videogames</option>
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>
       </div>
-      <div className="filter-item">
-        <label htmlFor="rating-select">Sort by Rating: </label>
-        <select id="rating-select" value={ratingOrder} onChange={handleRatingChange}>
+      <div className={styles["filter-item"]}>
+        <label className={styles.label} htmlFor="rating-select">Sort by Rating: </label>
+        <select className={styles.select} id="rating-select" value={ratingOrder} onChange={handleRatingChange}>
           <option value="">All Videogames</option>
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
