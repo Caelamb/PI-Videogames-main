@@ -102,13 +102,7 @@ const Form = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        marginTop: "16rem",
-      }}
-    >
+    <div className={styles.container}>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Name: </label>
@@ -185,12 +179,3 @@ const Form = () => {
 };
 
 export default Form;
-
-
-
-
-
-
-
-
-

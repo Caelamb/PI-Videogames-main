@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-image: url('../../assets/background.jpg');
+    background-image: url('../../assets/81a05d046f50a115c685122af5720f9f.gif');
     background-size: cover;
     background-position: center;
     color: white;
@@ -18,10 +18,14 @@
     color: white;
     background-color: #0c383e;
     border-radius: 4px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
   }
   
   .button:hover {
     background-color: #09383e;
+    transform: scale(1.1);
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.8);
   }
+  
   

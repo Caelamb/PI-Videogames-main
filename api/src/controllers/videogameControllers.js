@@ -131,8 +131,8 @@ const getVideogameApi = async (name) => {
       );
       if (filterVideogames.length) {
         return filterVideogames;
-      }
-    } else {
+    } 
+  } else {
       return uniqueVideogames;
     }
   };

@@ -1,3 +1,14 @@
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 0rem;
+  background-image: url('../../assets/istockphoto-1212342896-612x612-1.jpeg');
+  max-width: 9000px;
+  max-height: 1000px;
+  height: 100%
+}
+
 .button {
     display: inline-block;
     padding: 8px 16px;
@@ -7,6 +18,7 @@
     border-radius: 4px;
     border: none;
     cursor: pointer;
+    margin-top: 463px;
   }
   
   .button:hover {
@@ -16,3 +28,4 @@
   .button:active {
     background-color: #27408b;
   }
+

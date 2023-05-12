@@ -15,12 +15,12 @@ const Navbar = ({ onSearch }) => {
     <div className={styles.navbar}>
       <form onSubmit={handleSumit}>
         <input 
-           placeholder='Busqueda...'
+           placeholder='Search...'
            value={searchTerm}
            onChange={(event) => setSearchTerm(event.target.value)}/>
-        <button type='submit' >Buscar</button>
+        <button type='submit' >Search</button>
       </form>
-      <Link to="/form" className={styles.button}>Crear Videojuego</Link>
+      <Link to="/form" className={styles.button}>Create videogame</Link>
     </div>
   )
 }

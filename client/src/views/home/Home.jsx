@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import styles from "../home/home.module.css";
 
 import {
   fetchInitialVideogames,
@@ -56,7 +57,7 @@ const Home = () => {
   const displayedVideogames = videogames.slice(startIndex, endIndex);
 
   return (
-    <div>
+    <div className={styles.container}>
       <Navbar onSearch={handleSearch} />
       <Filters 
         onFilterByGenre={handleFilterByGenre}

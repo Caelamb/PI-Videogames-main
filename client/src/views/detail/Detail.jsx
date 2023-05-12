@@ -18,7 +18,7 @@ const Detail = () => {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} >
       {videoGameDetails && (
         <div>
           <h2 className={styles.title}>ID: {videoGameDetails.id}</h2>
@@ -46,9 +46,9 @@ const Detail = () => {
           ) : (
             videoGameDetails.Genres && <p className={styles.info}>Genres: {videoGameDetails.Genres.name}</p>
           )}
-          <Link to="/home" className={styles.button}>Go back to the main page</Link>
         </div>
       )}
+      <Link to="/home" className={styles.button}>Go back to the main page</Link>
     </div>
   );
 };
