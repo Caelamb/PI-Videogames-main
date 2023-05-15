@@ -60,11 +60,13 @@ const Filters = ({
         <label className={styles.label} htmlFor="source-select">Source: </label>
         <select className={styles.select} id="source-select" value={selectedSource} onChange={handleSourceChange}>
         <option value="">All Videogames</option>
-          {plataforms.map((platform) => (
-            <option key={platform} value={platform}>
-              {platform}
-            </option>
-          ))}
+          {plataforms.flatMap((platform) =>
+           platform.split(",").map((individualPlatform) => (
+           <option key={individualPlatform.trim()} value={individualPlatform.trim()}>
+          {individualPlatform.trim()}
+             </option>
+           ))
+         )}
         </select>
       </div>
       <div className={styles["filter-item"]}>

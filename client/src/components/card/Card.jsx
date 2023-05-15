@@ -14,6 +14,7 @@ const Card = ({ game }) => {
       <Link to={`/detail/${game.id}`}>
       <img src={game.image} alt={game.name} />
       <h3>{game.name}</h3>
+      <h3>{game.rating}</h3>
       <p>
         {genres.map((genre) => (
           <span key={`${game.id}-${genre}`}>{genre}</span>

@@ -58,14 +58,15 @@ const Form = () => {
   };
 
   const handleGenreChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions).map(
-      (option) => option.value
-    );
-    setInput({
-      ...input,
-      genres: selectedOptions,
-    });
+    const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
+    setInput(prevState => ({
+      ...prevState,
+      genres: prevState.genres.includes(selectedOptions[0])
+        ? prevState.genres.filter(genre => genre !== selectedOptions[0])
+        : [...prevState.genres, selectedOptions[0]],
+    }));
   };
+  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -129,11 +130,13 @@ const Form = () => {
             onChange={handleChange}
           >
             <option value="">Select a platform</option>
-            {platforms.map((platform, index) => (
-              <option value={platform} key={index}>
-                {platform}
-              </option>
-            ))}
+            {platforms.flatMap((platform) =>
+             platform.split(",").map((individualPlatform) => (
+            <option key={individualPlatform.trim()} value={individualPlatform.trim()}>
+             {individualPlatform.trim()}
+             </option>
+           ))
+         )}
           </select>
         </div>
         <div>
@@ -163,7 +166,7 @@ const Form = () => {
             value={input.genres}
             onChange={handleGenreChange}
               > 
-        <option value="">Select a platform</option>
+        <option value="">Select a Genres</option>
             {genres.map((genre) => (
               <option value={genre.id} key={genre.id}>
                 {genre.name}
