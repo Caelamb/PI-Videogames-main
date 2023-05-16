@@ -12,14 +12,19 @@ const Card = ({ game }) => {
   return (
     <div className={styles['card-container']}>
       <Link to={`/detail/${game.id}`}>
-      <img src={game.image} alt={game.name} />
-      <h3>{game.name}</h3>
-      <h3>{game.rating}</h3>
-      <p>
-        {genres.map((genre) => (
-          <span key={`${game.id}-${genre}`}>{genre}</span>
-        ))}
-      </p>
+        <img src={game.image} alt={game.name} />
+        <h3>{game.name}</h3>
+        <div className={styles['card-info']}>
+          <div className={styles['card-genres']}>
+            {genres.map((genre) => (
+              <span key={`${game.id}-${genre}`}>{genre}</span>
+            ))}
+          </div>
+          <div className={styles['card-rating']}>
+            <span>{game.rating}</span>
+            <span className={styles['material-symbols-outlined']}>star</span>
+          </div>
+        </div>
       </Link>
     </div>
   );

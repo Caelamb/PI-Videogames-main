@@ -102,6 +102,11 @@ const Form = () => {
     }
   };
 
+  const uniquePlatforms = platforms
+  .flatMap((platform) => platform.split(","))
+  .map((individualPlatform) => individualPlatform.trim())
+  .filter((platform, index, array) => array.indexOf(platform) === index);
+
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit}>
@@ -130,13 +135,11 @@ const Form = () => {
             onChange={handleChange}
           >
             <option value="">Select a platform</option>
-            {platforms.flatMap((platform) =>
-             platform.split(",").map((individualPlatform) => (
-            <option key={individualPlatform.trim()} value={individualPlatform.trim()}>
-             {individualPlatform.trim()}
-             </option>
-           ))
-         )}
+            {uniquePlatforms.flatMap((platform) =>
+           <option key={platform} value={platform}>
+              {platform}
+           </option>
+          )}
           </select>
         </div>
         <div>

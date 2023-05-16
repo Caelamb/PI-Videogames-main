@@ -54,7 +54,7 @@ const Home = () => {
   const itemsPerPage = 15;
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedVideogames = videogames.slice(startIndex, endIndex);
+  const displayedVideogames =videogames.slice(startIndex, endIndex);
 
   return (
     <div className={styles.container}>
