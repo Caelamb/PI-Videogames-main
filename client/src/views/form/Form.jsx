@@ -57,6 +57,32 @@ const Form = () => {
     );
   };
 
+  const handleRatingChange = (e) => {
+    let value = parseInt(e.target.value);
+  
+    // Verifica si el valor es menor que 0
+    if (value < 0) {
+      value = 0;
+    }
+    // Verifica si el valor es mayor que 10
+    else if (value > 10) {
+      value = 10;
+    }
+  
+    setInput({
+      ...input,
+      rating: value,
+    });
+  
+    setError(
+      validate({
+        ...input,
+        rating: value,
+      })
+    );
+  };
+  
+
   const handleGenreChange = (e) => {
     const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
     setInput(prevState => ({
@@ -157,7 +183,7 @@ const Form = () => {
             name="rating"
             type="number"
             value={input.rating}
-            onChange={handleChange}
+            onChange={handleRatingChange}
           />
         </div>
         <span>{error.rating}</span>
